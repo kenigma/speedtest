@@ -12,6 +12,7 @@ labels = ['server_name', 'server_id']
 latencyGauge = Gauge('ping_latency', 'Ping Latency in ms', labels)
 downloadGauge = Gauge('download_speed', 'Download speed in bytes', labels)
 uploadGauge = Gauge('upload_speed', 'Upload speed in bytes', labels)
+interval = 30 * 60   # 30 mins
 
 # function to read 
 def doSpeedtest(interval, latencyGauge, downloadGauge, uploadGauge):
@@ -43,7 +44,7 @@ if __name__ == '__main__':
     # Start up the server to expose the metrics.
     start_http_server(8008)
     try:
-        t1 = threading.Thread(target = doSpeedtest, args = (1000, latencyGauge, downloadGauge, uploadGauge))
+        t1 = threading.Thread(target = doSpeedtest, args = (interval, latencyGauge, downloadGauge, uploadGauge))
         t1.start()
         t1.join()
     except:
